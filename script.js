@@ -4,19 +4,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const moodyImage = document.getElementById("moodyImage");
   const reynoldsElem = document.getElementById("reynolds");
   const fdarcyElem = document.getElementById("fdarcy");
+  const indicador = document.getElementById("indicador");
   let linesActive = true;
   const viewport = window.visualViewport;
+
+  function checkPosition(mouseX, mouseY) {
+    const minX = 0.07 * canvas.width;
+    const maxX = 0.91 * canvas.width;
+    const minY = 0.069 * canvas.height;
+    const maxY = 0.9175 * canvas.height;
+    const res = (mouseY > minY && mouseY < maxY && mouseX > minX && mouseX < maxX);
+
+    return { res, minX, minY, maxX, maxY };
+  }
 
   // Función para dibujar las líneas de referencia
   function drawReferenceLine(x, y) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const minX = 0.07 * canvas.width;
-    const maxX = 0.91 * canvas.width;
-    const minY = 0.069 * canvas.height;
-    const maxY = 0.9175 * canvas.height;
+    const { res, minX, minY, maxX, maxY } = checkPosition(x, y);
 
-    if (y > minY && y < maxY && x > minX && x < maxX) {
+    if (res) {
       ctx.beginPath();
       ctx.moveTo(x, minY);
       ctx.lineTo(x, maxY);
@@ -60,15 +68,19 @@ document.addEventListener("DOMContentLoaded", function () {
       const mouseX = event.clientX - rect.left;
       const mouseY = event.clientY - rect.top;
 
-      drawReferenceLine(mouseX, mouseY);
+      const { res, minX, minY, maxX, maxY } = checkPosition(mouseX, mouseY);
 
-      const { reynolds, factorFriccion } = calcularReynolds(mouseX, mouseY, canvas);
+      if (res) {
 
-      console.log(`(${mouseX / canvas.width}, ${mouseY / canvas.height})`);
-      console.log(`(${reynolds}, ${factorFriccion})`);
+        drawReferenceLine(mouseX, mouseY);
 
-      reynoldsElem.textContent = `Re = ${reynolds}`;
-      fdarcyElem.textContent = `f = ${factorFriccion}`;
+        const { reynolds, factorFriccion } = calcularReynolds(mouseX, mouseY, canvas);
+
+        console.log(`(${reynolds}, ${factorFriccion})`);
+
+        reynoldsElem.textContent = `Re = ${reynolds}`;
+        fdarcyElem.textContent = `f = ${factorFriccion}`;
+      }
     }
   }
 
@@ -82,6 +94,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function setCanvas() {
     canvas.width = moodyImage.width;
     canvas.height = moodyImage.height;
+    indicador.style.top = `${canvas.height} px`;
+    indicador.style.left = `${0.1 * canvas.width} px`;
+    console.log("test");
+    console.log(indicador.style);
   }
 
   // Eventos

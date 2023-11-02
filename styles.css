@@ -14,7 +14,7 @@ html {
     height: auto;
     width: auto;
     max-height: 95vh;
-    max-width: 100vw;
+    max-width: 95vw;
 }
 
 .container {
@@ -34,5 +34,7 @@ canvas {
 }
 
 .indicador {
+    position: relative;
     font-size: 18px;
+    left: 10%;
 }

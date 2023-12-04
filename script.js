@@ -24,9 +24,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const { res, minX, minY, maxX, maxY } = checkPosition(x, y);
 
+
+
+    let x1 = x + (maxY - minY)*0.02
+    if (x1 > maxX){
+      x1 = maxX;
+    }
+
+    let y1 = y - (maxY - minY)*0.02
+    if (y1 < minY){
+      y1 = minY;
+    }
+
     if (res) {
       ctx.beginPath();
-      ctx.moveTo(x, minY);
+      ctx.moveTo(x, y1);
       ctx.lineTo(x, maxY);
       ctx.strokeStyle = "red";
       ctx.lineWidth = 2;
@@ -34,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       ctx.beginPath();
       ctx.moveTo(minX, y);
-      ctx.lineTo(maxX, y);
+      ctx.lineTo(x1, y);
       ctx.strokeStyle = "red";
       ctx.lineWidth = 2;
       ctx.stroke();

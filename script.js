@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   moodyImage.addEventListener("load", function () {
     setCanvas();
-    updateValues();
   });
 
   function updateValues2() {
@@ -198,6 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function setCanvas() {
     canvas.width = moodyImage.width;
     canvas.height = moodyImage.height;
+    updateValues();
     //indicador.style.top = `${canvas.height}px`;
     //indicador.style.left = `${0.1 * canvas.width}px`;
   }

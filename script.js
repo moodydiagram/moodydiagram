@@ -34,11 +34,24 @@ document.addEventListener("DOMContentLoaded", function () {
     sliderRo.setAttribute('value', sliderEValue);
     sliderRo.value = sliderEValue;
     const fVar = moody(reVar, eVar, 10);
-    outputF.innerHTML = fVar.toFixed(10);
+    plot(fVar, reVar, fVar);
+  }
 
-    const { x, y } = calcularCordenadas(reVar, fVar);
-    drawReferenceLine(x, y);
-    drawFactorCurve(reVar, eVar);
+  function plot(fVar, reVar, fVar) {
+    if (typeof fVar === 'string' || fVar instanceof String) {
+      outputF.innerHTML = fVar;
+      clearDraws()
+    } else {
+      outputF.innerHTML = fVar.toFixed(15);
+      const { x, y } = calcularCordenadas(reVar, fVar);
+      clearDraws()
+      drawReferenceLine(x, y);
+      drawFactorCurve(reVar, eVar);
+    }
+  }
+
+  function clearDraws() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   viewport.addEventListener("resize", setCanvas);
@@ -63,11 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     outputRo.setAttribute('value', eVar);
     outputRo.value = eVar;
     const fVar = moody(reVar, eVar, 10);
-    outputF.innerHTML = fVar.toFixed(15);
-
-    const { x, y } = calcularCordenadas(reVar, fVar);
-    drawReferenceLine(x, y);
-    drawFactorCurve(reVar, eVar);
+    plot(fVar, reVar, fVar)
   }
 
   function moody(Re, rel_e, n) {
@@ -76,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (Re < 4000) {
-      return "transition flow";
+      return "Flujo de transición";
     }
 
     let x = 0;
@@ -111,7 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function drawReferenceLine(x, y) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const { res, minX, minY, maxX, maxY } = checkPosition(x, y);
 
